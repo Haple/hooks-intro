@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 function App() {
   const [techs, setTechs] = useState([
@@ -10,11 +10,10 @@ function App() {
 
   const [newTech, setNewTech] = useState('');
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  const handleSubmit = useCallback(() => {
     setTechs([...techs, newTech]);
     setNewTech('');
-  }
+  }, [newTech, techs]);
 
   useEffect(() => {
     const storedTechs = localStorage.getItem('techs');
@@ -35,17 +34,16 @@ function App() {
         ))}
       </ul>
       <strong>Você tem {techSize} tecnologias</strong>
-      <form>
-        <input
-          placeholder="Nova tecnologia"
-          type="text"
-          value={newTech}
-          onChange={e => setNewTech(e.target.value)}
-        />
-        <button type="submit" onClick={handleSubmit}>
-          Adicionar
-        </button>
-      </form>
+      <br />
+      <input
+        placeholder="Nova tecnologia"
+        type="text"
+        value={newTech}
+        onChange={e => setNewTech(e.target.value)}
+      />
+      <button type="button" onClick={handleSubmit}>
+        Adicionar
+      </button>
     </>
   );
 }

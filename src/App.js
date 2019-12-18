@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [techs, setTech] = useState([
+  const [techs, setTechs] = useState([
     'ReactJS',
     'React Native',
     'NodeJS',
     'React Hooks',
   ]);
+
   const [newTech, setNewTech] = useState('');
+
   function handleSubmit(e) {
     e.preventDefault();
-    setTech([...techs, newTech]);
+    setTechs([...techs, newTech]);
     setNewTech('');
   }
+
+  useEffect(() => {
+    const storedTechs = localStorage.getItem('techs');
+    if (storedTechs) setTechs(JSON.parse(storedTechs));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('techs', JSON.stringify(techs));
+  }, [techs]);
+
   return (
     <>
       <ul>
